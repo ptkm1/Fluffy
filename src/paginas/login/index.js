@@ -23,7 +23,9 @@ function Cadastrar(){
   navigation.push('Cadastro');
 }
 
-
+function EsqueciSenha(){
+  navigation.push('EsqueciSenha')
+}
 
   return(
     <View style={styles.container}>
@@ -45,6 +47,10 @@ function Cadastrar(){
           <Text style={{fontWeight: 'bold', color: '#5184A9', marginVertical: 5}}>Senha</Text>
           <TextInput style={styles.input} secureTextEntry={true} placeholder="Digite a sua senha" placeholderTextColor="#5184A9" onChangeText={(value)=>setPassword(value)}  />
           </View>
+          <TouchableOpacity style={styles.btnCadastro} onPress={EsqueciSenha} >
+            <Text style={{fontWeight: 'bold', color: 'gray'}}>Esqueci a senha </Text>
+              <Icon name="ios-user" size={14} color="gray" />
+          </TouchableOpacity>
         </View>
 
         <TouchableOpacity style={styles.btnLogin} onPress={Autenticar}>
@@ -55,6 +61,7 @@ function Cadastrar(){
           <Text style={{fontWeight: 'bold', color: '#5184A9'}}>Criar uma conta </Text>
             <Icon name="ios-create" size={14} color="#5184A9" />
         </TouchableOpacity>
+
       </View>
 
     </View>

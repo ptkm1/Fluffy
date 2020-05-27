@@ -1,7 +1,15 @@
+import {AsyncStorage} from 'react-native';
 import {create} from 'apisauce';
 
 const api = create({
-  baseURL: 'http://192.168.0.104:3000',
+  baseURL: 'http://localhost:3000',
+});
+
+api.addAsyncRequestTransform(request => async () =>{
+  const token = await AsyncStorage.getItem('@fluffy:token');
+
+  if(token)
+  request.headers['Authorization'] = `Bearer ${token}`;
 });
 
 api.addResponseTransform(response => {

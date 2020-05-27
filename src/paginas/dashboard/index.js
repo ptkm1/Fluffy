@@ -1,4 +1,4 @@
-import React,{useContext} from 'react';
+import React,{useContext,useState,useEffect} from 'react';
 import {View,Text, AsyncStorage, TouchableOpacity, ScrollView, FlatList} from 'react-native';
 import { Avatar } from 'react-native-elements';
 import styles from './styles.js';
@@ -8,23 +8,64 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import AnimatedHeader from '../../componentes/header'
 import Perfil from '../../media/user.png';
 
+import api from '../../services/api';
+
 export default function Dashboard(){
 
+  const [objetos, setObjetos] = useState([])
+  const [feed, setFeed] = useState([])
 
+
+  useEffect(()=>{
+    async function getProjetos(){
+      try{
+        const response = await api.get('/projetos');
+
+        const { projetos } = response.data;
+
+        setObjetos([projetos.map(arr=>arr.title)])
+        setFeed([projetos])
+
+console.log(projetos)
+      }catch(response){
+        alert(response.data.error)
+      }
+    }
+    getProjetos()
+
+
+
+  },[])
+  //Feed
+  const FEEDE = feed[0]
+
+
+  /*
+
+        { feed.map(response=>(
+          <View style={{marginTop:30}} key={feed.map(resp=>resp._id)}>
+            <Text>{response.map(arr=>arr.tt)}</Text>
+          </View>
+
+        )) }
+  */
+
+  //DATA, COM OS 5 PRIMEIROS POSTS
   const DATA = [
   {
     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
+    title: objetos.map(arr=>arr[0]),
   },
   {
     id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
+    title: objetos.map(arr=>arr[1]),
   },
   {
     id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
+    title: objetos.map(arr=>arr[2]),
   },
-];
+  ];
+
 
 function Item({ title }) {
   return (
@@ -39,6 +80,8 @@ function Item({ title }) {
   function sair(){
     Deslogar();
   }
+
+
 
   return (
     <>
@@ -56,16 +99,20 @@ function Item({ title }) {
           </TouchableOpacity>
       </View>
     </View>
-
+    <Text style={{marginLeft: 20, fontWeight: 'bold', color: '#5184A9'}}>Hilights</Text>
     <FlatList
       horizontal
       showsHorizontalScrollIndicator={false}
-      data={DATA}
+      data={FEEDE}
       renderItem={({ item }) => <Item title={item.title}/>}
-      keyExtractor={item => item.id}
+      keyExtractor={item => item._id}
       style={styles.flat}
     />
     <ScrollView style={styles.container}>
+
+
+
+
       <View style={styles.icons} >
 
         <TouchableOpacity onPress={()=>{}} style={styles.botoes}>

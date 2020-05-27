@@ -15,6 +15,8 @@ export const AuthProvider = ({ children }) =>{
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [token, setToken] = useState('');
+  const [forgot,setForgot] = useState(false);
 
 
 
@@ -85,10 +87,39 @@ export const AuthProvider = ({ children }) =>{
       }
     }
 
+
+
+
+
+async function EsqueciSenha(){
+      try{
+        const response = await api.post('/auth/forgot_password',{
+          email: email,
+        })
+        alert('Um email foi enviado, verifique-o.');
+      }catch(response){
+        alert('Não foi possivel resetar, verifique se o e-mail está cadastrado e/ou digitado corretamente');
+      }
+
+}
+
+async function ResetarSenha(){
+  try{
+    const response = await api.post('auth/reset_password',{
+      email: email,
+      token: token,
+      password: password,
+    })
+  }catch(response){
+    alert('Não foi possivel resetar sua senha, tente novamente')
+  }
+}
+
+
   return(
     <AuthContext.Provider value={{signed: !! user,
-         user, Logar, Cadastrar, Deslogar, loading,
-         setName,setEmail,setPassword}}
+         user, Logar, Cadastrar, Deslogar, EsqueciSenha,ResetarSenha,forgot,loading,
+         setName,setEmail,setPassword,setToken}}
          >
       {children}
     </AuthContext.Provider>
