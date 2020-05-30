@@ -1,4 +1,9 @@
 import {StyleSheet} from 'react-native';
+import { Dimensions } from 'react-native';
+
+
+const {height, width} = Dimensions.get('window');
+
 
 const styles = StyleSheet.create({
   container: {
@@ -41,25 +46,9 @@ const styles = StyleSheet.create({
    alignItems: 'center',
    borderRadius: 100
  },
- flat:{
-   height: 0,
-   paddingTop: 15,
-   paddingLeft: 10,
- },
- item: {
-   backgroundColor: '#5184A9',
-   padding: 5,
-   marginHorizontal: 8,
-   height: 180,
-   width: 180,
-   justifyContent: 'center',
-   alignItems: 'center',
-   borderRadius: 9,
- },
- title: {
-   fontSize: 12,
-   color: '#fff',
-   fontWeight: 'bold'
+item: {
+   borderWidth: 1,
+   borderColor: 'royalblue'
  },
  icons:{
   width: '100%',
@@ -78,6 +67,47 @@ const styles = StyleSheet.create({
    justifyContent: 'center',
    alignItems: 'center',
  },
+ add:{
+   width: 60,
+   height: 60,
+   borderRadius: 11,
+   justifyContent: 'center',
+   alignItems: 'center',
+ },
+ box:{
+   backgroundColor: '#5184A9',
+   padding: 3,
+   marginLeft: 9,
+   marginRight: 9,
+   height: height * 0.2,
+   width: width * 0.45,
+   alignItems: 'center',
+   borderRadius: 15,
+ },
+ titulo:{
+   fontSize: 12,
+   color: '#fff',
+   fontWeight: 'bold'
+ },
+ descricao:{
+   fontSize: 9,
+   color: 'whitesmoke',
+   fontWeight: 'bold',
+   fontStyle: 'italic'
+ },
+ deleteEinfo:{
+   flexDirection: 'row',
+   marginBottom: 5,
+   marginTop: 5,
+   width: "100%",
+   justifyContent: 'flex-start',
+ },
+ conteudo:{
+   width: '100%',
+   justifyContent: 'flex-start',
+   alignItems: 'center',
+   marginTop: "20%",
+ }
 
 });
 

@@ -3,17 +3,34 @@ import {View,Text, AsyncStorage, TouchableOpacity, ScrollView, FlatList} from 'r
 import { Avatar } from 'react-native-elements';
 import styles from './styles.js';
 import AuthContext from '../../contexts/auth';
-
+import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AnimatedHeader from '../../componentes/header'
 import Perfil from '../../media/user.png';
 
 import api from '../../services/api';
 
-export default function Dashboard(){
+
+export default function Dashboard({navigation}){
+
+
+  function Postar(){
+    navigation.push('criarPost');
+  }
+
+
+  async function Deletar(id){
+    try{
+      const response = await api.delete(`/projetos/${id}`);
+        navigation.push('Dashboard');
+    }catch(response){
+      alert(response);
+    }
+  }
 
   const [objetos, setObjetos] = useState([])
   const [feed, setFeed] = useState([])
+
 
 
   useEffect(()=>{
@@ -36,44 +53,9 @@ console.log(projetos)
 
 
   },[])
+
   //Feed
-  const FEEDE = feed[0]
-
-
-  /*
-
-        { feed.map(response=>(
-          <View style={{marginTop:30}} key={feed.map(resp=>resp._id)}>
-            <Text>{response.map(arr=>arr.tt)}</Text>
-          </View>
-
-        )) }
-  */
-
-  //DATA, COM OS 5 PRIMEIROS POSTS
-  const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: objetos.map(arr=>arr[0]),
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: objetos.map(arr=>arr[1]),
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: objetos.map(arr=>arr[2]),
-  },
-  ];
-
-
-function Item({ title }) {
-  return (
-    <View style={styles.item}>
-      <Text style={styles.title}>{title}</Text>
-    </View>
-  );
-}
+  const FEEDE = feed[0];
 
   const {signed, user, Deslogar} = useContext(AuthContext)
 
@@ -92,26 +74,55 @@ function Item({ title }) {
           <Avatar rounded source={Perfil}/>
           <Text style={{marginLeft: 5, fontWeight: 'bold', color: '#5184A9'}}>{user.name}</Text>
         </View>
-
-
-          <TouchableOpacity style={styles.deslog} onPress={sair}>
-            <Icon name="ios-exit" size={20} color="#5184A9" />
+        <View style={{flexDirection: 'row',alignItems: 'center'}}>
+          <TouchableOpacity style={styles.add} onPress={Postar}>
+            <Icon name="ios-add" size={20} color="#5184A9" />
+            <Text style={{marginLeft: 5, fontWeight: 'bold',fontSize: 8,textAlign: 'center',alignItems: 'center', color: '#5184A9'}}>Adicionar Projeto</Text>
           </TouchableOpacity>
+            <TouchableOpacity style={styles.deslog} onPress={sair}>
+              <Icon name="ios-exit" size={20} color="#5184A9" />
+            </TouchableOpacity>
+        </View>
       </View>
     </View>
     <Text style={{marginLeft: 20, fontWeight: 'bold', color: '#5184A9'}}>Hilights</Text>
-    <FlatList
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      data={FEEDE}
-      renderItem={({ item }) => <Item title={item.title}/>}
-      keyExtractor={item => item._id}
-      style={styles.flat}
+
+<View style={{marginVertical: 15, paddingLeft: 5,}}>
+  <FlatList
+    horizontal
+    showsHorizontalScrollIndicator={false}
+    data={FEEDE}
+    extraData={feed[0]}
+    keyExtractor={incident => String(incident._id)}
+    renderItem={({ item: incident })=> (
+      <View style={styles.box}>
+        <View style={styles.deleteEinfo}>
+          <TouchableOpacity style={{marginLeft: 10,}} onPress={()=> Deletar(incident._id)}>
+            <Icon name="ios-trash" size={16} color="#FFF" />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={{marginLeft: 10,}} onPress={()=> Deletar(incident._id)}>
+            <Icon name="ios-build" size={16} color="#FFF" />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.conteudo}>
+            <Text style={styles.titulo}>{incident.title}</Text>
+            <Text style={styles.descricao}>{incident.description}</Text>
+        </View>
+
+
+      </View>
+    )}
     />
+</View>
+
+
+
+
+
+
+
     <ScrollView style={styles.container}>
-
-
-
 
       <View style={styles.icons} >
 
@@ -154,6 +165,50 @@ function Item({ title }) {
           <Icon name="ios-paper" size={20} color="#FFF" />
           <Text style={{fontSize: 7, fontWeight: 'bold', color: '#fff'}}>Forum</Text>
         </TouchableOpacity>
+
+
+
+
+        <TouchableOpacity onPress={()=>{}} style={styles.botoes}>
+          <Icon name="ios-code" size={20} color="#FFF" />
+          <Text style={{fontSize: 8, fontWeight: 'bold', color: '#fff'}}>Code</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={()=>{}} style={styles.botoes}>
+          <Icon name="ios-build" size={20} color="#FFF" />
+          <Text style={{fontSize: 7, fontWeight: 'bold', color: '#fff'}}>Ferramentas</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={()=>{}} style={styles.botoes}>
+          <Icon name="ios-bulb" size={20} color="#FFF" />
+          <Text style={{fontSize: 7, fontWeight: 'bold', color: '#fff'}}>Idéias</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={()=>{}} style={styles.botoes}>
+          <Icon name="ios-chatbubbles" size={20} color="#FFF" />
+            <Text style={{fontSize: 7, fontWeight: 'bold', color: '#fff'}}>Comunidade</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={()=>{}} style={styles.botoes}>
+          <Icon name="ios-contacts" size={20} color="#FFF" />
+          <Text style={{fontSize: 7, fontWeight: 'bold', color: '#fff'}}>Equipes</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={()=>{}} style={styles.botoes}>
+          <Icon name="ios-rocket" size={20} color="#FFF" />
+          <Text style={{fontSize: 7, fontWeight: 'bold', color: '#fff'}}>Carreira</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={()=>{}} style={styles.botoes}>
+          <Icon name="ios-sad" size={20} color="#FFF" />
+            <Text style={{fontSize: 7, fontWeight: 'bold', color: '#fff'}}>Reclamações</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={()=>{}} style={styles.botoes}>
+          <Icon name="ios-paper" size={20} color="#FFF" />
+          <Text style={{fontSize: 7, fontWeight: 'bold', color: '#fff'}}>Forum</Text>
+        </TouchableOpacity>
+
 
       </View>
 

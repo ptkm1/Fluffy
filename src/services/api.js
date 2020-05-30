@@ -2,7 +2,7 @@ import {AsyncStorage} from 'react-native';
 import {create} from 'apisauce';
 
 const api = create({
-  baseURL: 'http://localhost:3000',
+  baseURL: 'https://192.168.0.104:19006/',
 });
 
 api.addAsyncRequestTransform(request => async () =>{
